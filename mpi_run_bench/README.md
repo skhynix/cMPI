@@ -158,7 +158,7 @@ source MPI_RUN_BENCH/run_cxl_diff_cell.sh
 ## Run memset latency evaluation for CXL memory sharing
 Compile the benchmark
 ```
-cd cxl_type3_tests/memo_ae/src/
+cd cxl_shm_tests/memo_ae/src/
 
 make
 ```
@@ -166,7 +166,7 @@ make
 Test latency with uncachable
 
 ```
-cd cxl_type3_tests/memo_ae/test_cxl/
+cd cxl_shm_tests/memo_ae/test_cxl/
 
 bash test_memset_lat_uncacheable.sh
 
@@ -175,7 +175,7 @@ bash test_memset_lat_uncacheable.sh
 Test latency with clflush
 
 ```
-cd cxl_type3_tests/memo_ae/test_cxl/
+cd cxl_shm_tests/memo_ae/test_cxl/
 
 bash test_memset_lat_clflush.sh
 ```
@@ -183,14 +183,14 @@ bash test_memset_lat_clflush.sh
 Test latency with clflushopt
 
 ```
-cd cxl_type3_tests/memo_ae/test_cxl/
+cd cxl_shm_tests/memo_ae/test_cxl/
 
 bash test_memset_lat_clflushopt.sh
 ```
 
 ## Run bandwidh test for CXL memory sharing
 ```
-cd cxl_type3_tests/memo_ae/test_cxl/
+cd cxl_shm_tests/memo_ae/test_cxl/
 
 bash test_seq_bw_devdax_read_nt.sh
 ```
@@ -222,11 +222,11 @@ CXL Memory Sharing (with cache flushing)
 
 ```
 # Latency
-cd ~/cxl_type3_tests/memo_ae/
+cd ~/cxl_shm_tests/memo_ae/
 bash test_memset_lat_clflushopt.sh
 
 # Bandwidth
-cd ~/cxl_type3_tests/memo_ae/
+cd ~/cxl_shm_tests/memo_ae/
 bash test_seq_bw_devdax_read_nt.sh
 ```
 
