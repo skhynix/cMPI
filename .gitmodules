@@ -1,0 +1,3 @@
+[submodule "mpich"]
+	path = mpich
+	url = https://github.com/skhynix/mpich.git
