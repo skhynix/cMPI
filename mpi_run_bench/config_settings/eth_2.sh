@@ -1,0 +1,6 @@
+#!/bin/bash
+PINNING=""
+CONDA_ENV="mpich"
+RUN_ENV1="FI_PROVIDER=tcp  FI_TCP_IFACE=ens3f0"
+MPIRUN="${CONDA_DIR}/${CONDA_ENV}/bin/mpirun"
+MPIARGS="-np ${NUM_PROCESS} -ppn ${PPN} -hostfile /home/sherry/mpi_sf/mpich_hostfile"

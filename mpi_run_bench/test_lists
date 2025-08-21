@@ -1,0 +1,15 @@
+eth_2
+ib_2
+cxl_eth_2
+cxl_eth_2_cell64
+
+
+osu_get_mbw  (2-32)
+osu_get_multi_lat  (2-32)
+osu_pt2pt_mbw (2-32)
+osu_pt2pt_multi_lat (2-32)
+
+osu_get_latency (2)
+osu_pt2pt_latency  (2)
+osu_put_bw  (2)
+osu_put_latency  (2)

@@ -1,0 +1,184 @@
+#!/usr/bin/env python3
+import os
+import re
+import argparse
+import sys
+import matplotlib.pyplot as plt
+import numpy as np
+from pathlib import Path
+import glob
+import matplotlib.ticker as ticker
+
+
+def vertion_titles():
+    return {
+        "cxl_eth_2": "cell size: 16KB",
+        "eth_2": "TCP over Ethernet",
+        "ib_2": "TCP over Mellanox (CX-6 Dx)",
+        "cxl_eth_2_cell64": "cell size: 64KB",
+        "cxl_eth_2_cell128": "cell size: 128KB",
+        "cxl_eth_2_cell32": "cell size: 32KB",
+    }
+
+def ver_title(ver):
+    return vertion_titles()[ver]
+
+
+def parse_output_log(file_path):
+    """Parse output.log file, extract Size and Bandwidth data"""
+    sizes = []
+    bandwidths = []
+    
+    try:
+        with open(file_path, 'r') as f:
+            content = f.readlines()
+            
+        # Find where data begins
+        data_start = False
+        for line in content:
+            if 'Size' in line and 'MB/s' in line:
+                data_start = True
+                continue
+                
+            if data_start:
+                # Skip lines containing "cxl shm"
+                if 'cxl shm' in line:
+                    continue
+                    
+                # Parse data lines
+                parts = line.strip().split()
+                if len(parts) >= 2:  # Ensure at least two columns of data
+                    try:
+                        size = float(parts[0])
+                        if size > 8388608:
+                            break
+                        bandwidth = float(parts[1])
+                        sizes.append(size)
+                        bandwidths.append(bandwidth)
+                    except ValueError:
+                        # Skip lines that can't be parsed
+                        continue
+        
+        return sizes, bandwidths
+    except Exception as e:
+        print(f"Error parsing file {file_path}: {e}")
+        return [], []
+
+def check_file_exists(file_path):
+    """Check if a file exists, notify user if not"""
+    if not os.path.exists(file_path):
+        print(f"Warning: File {file_path} does not exist")
+        return False
+    return True
+
+def format_size_labels(sizes):
+    """Format labels based on size: bytes, K, M or G"""
+    formatted_labels = []
+    for size in sizes:
+        if size >= 1024*1024*1024:  # >= 1G
+            formatted_labels.append(f"{size/(1024*1024*1024):.0f}G")
+        elif size >= 1024*1024:     # >= 1M
+            formatted_labels.append(f"{size/(1024*1024):.0f}M")
+        elif size >= 1024:          # >= 1K
+            formatted_labels.append(f"{size/1024:.0f}K")
+        else:
+            formatted_labels.append(f"{int(size)}")
+    return formatted_labels
+
+def plot_bandwidth(eval_name, versions, process_nums, output_file=None, title=None, results_base_dir=None):
+    plt.figure(figsize=(5, 3))
+    
+    # Set color and marker style cycles
+    colors = ['b', 'g', 'r', 'c', 'm', 'y', 'k']
+    markers = ['o', 's', '^', 'd', 'v', 'p', '*']
+    
+    has_data = False
+    all_sizes = []
+    
+    for i, ver in enumerate(versions):
+        for j, proc in enumerate(process_nums):
+            # Construct file path
+            file_path = os.path.join(results_base_dir, eval_name, ver, proc, "output.log")
+            
+            if check_file_exists(file_path):
+                sizes, bandwidths = parse_output_log(file_path)
+                
+                if sizes and bandwidths:
+                    has_data = True
+                    # Record all size values for x-axis ticks
+                    all_sizes.extend(sizes)
+                    
+                    # Select color and marker for each line
+                    color_idx = i % len(colors)
+                    marker_idx = j % len(markers)
+                    
+                    plt.plot(
+                        sizes, 
+                        bandwidths, 
+                        marker=markers[marker_idx], 
+                        color=colors[color_idx],
+                        linestyle='-',
+                        label=f"{ver_title(ver)} - {proc} processes"
+                    )
+                else:
+                    print(f"Warning: No valid data found in file {file_path}")
+    
+    if not has_data:
+        print("Error: No valid data found, cannot generate chart")
+        return False
+    
+    plt.xscale('log', base=4)
+    x_sizes = [1, 4, 16, 64, 256, 1024, 4096, 16384, 65536, 262144, 1048576, 4194304]
+    formatted_labels = format_size_labels(x_sizes)
+    
+    plt.xticks(x_sizes,formatted_labels, rotation=45)
+    plt.gca().yaxis.set_major_formatter(ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
+    
+    # Set chart properties
+    plt.xlabel('Message Size (Bytes)')
+    plt.ylabel('Bandwidth (MB/s)')
+    plt.grid(True, which="both", ls="--", lw=0.5)
+    
+    plt.legend(loc='best', fontsize=7)
+    plt.tight_layout()
+    
+    # Save or display chart
+    if output_file:
+        try:
+            plt.savefig(f"{output_file}.png", dpi=300, bbox_inches='tight')
+            print(f"Chart saved to {output_file}.png")
+            plt.savefig(f"{output_file}.pdf", dpi=300, bbox_inches='tight')
+            print(f"Chart saved to {output_file}.pdf")
+        except Exception as e:
+            print(f"Error saving chart: {e}")
+            return False
+    else:
+        plt.show()
+    
+    return True
+
+def main():
+    parser = argparse.ArgumentParser(description='Plot MPI Bandwidth Performance Charts')
+    parser.add_argument('--eval', required=True, help='Evaluation name (e.g., osu_get_mbw)')
+    parser.add_argument('--versions', required=True, help='List of versions, comma separated (e.g., cxl_eth_2,cxl_eth_4)')
+    parser.add_argument('--processes', required=True, help='List of process numbers, comma separated (e.g., 2,4,8)')
+    parser.add_argument('--output', help='Output chart file path (e.g., bandwidth_plot.png)')
+    parser.add_argument('--title', help='Chart title')
+    parser.add_argument('--result_dir', help='Result Data Dir')
+
+    
+    args = parser.parse_args()
+    
+    # Split parameters into lists
+    versions = args.versions.split(',')
+    process_nums = args.processes.split(',')
+    
+
+    
+    # Plot chart
+    success = plot_bandwidth(args.eval, versions, process_nums, args.output, args.title, args.result_dir)
+    if not success:
+        sys.exit(1)
+
+if __name__ == "__main__":
+    main()
