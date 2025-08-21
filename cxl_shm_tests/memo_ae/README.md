@@ -116,6 +116,24 @@ bash test_seq_bw.sh
 bash test_rand_bw.sh
 ```
 
+#### `movdir64B` bandwidth for deveax (long long) > 15 min
+bash test_movdir_devdax_bw.sh
+
+#### Sequential NT access bandwidth for devdax (long long) > 15 min
+bash test_seq_bw_devdax_read_nt.sh
+
+#### Mixed NT RW bandwidth for devdax (long long) > 15 min
+bash test_mixed_bw_devax_nt.sh
+
+#### Test memset latency in uncacheable
+bash test_memset_lat_uncacheable.sh
+
+#### Test memset latency with clflush
+bash test_memset_lat_clflush.sh
+
+#### Test memset latency with clflushopt
+bash test_memset_lat_clflushopt.sh
+
 ## Results
 All results are under the `results` folder. 
 

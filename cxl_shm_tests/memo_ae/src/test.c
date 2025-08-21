@@ -166,6 +166,9 @@ int run_test(test_cfg_t* cfg) {
     if (cfg->op == MOV) {
         clear_buff(cfg->buf_b, cfg->total_buf_size);
     }
+    if (cfg->op == MOV_DEVDAX || cfg->op == READ_NT_DEVDAX || cfg->op == MIXED_DEVDAX) {
+        clear_buff(cfg->buf_b, cfg->total_buf_size);
+    }
 #endif
     
     // launch thread
@@ -181,6 +184,9 @@ int run_test(test_cfg_t* cfg) {
         if (cfg->op == MOV) {
             curr_cfg->start_addr_b = &(curr_cfg->buf_b[i * curr_cfg->per_thread_size]);
         }
+        if (cfg->op == MOV_DEVDAX || cfg->op == READ_NT_DEVDAX || cfg->op == MIXED_DEVDAX) {
+            curr_cfg->start_addr_b = &(curr_cfg->buf_b[i * curr_cfg->per_thread_size]);
+        } 
         ret = pthread_create(&thread_arr[i], NULL, thread_wrapper, (void*)curr_cfg);
     }
 
@@ -544,10 +550,18 @@ void bw_wrapper(test_cfg_t* cfg) {
     int core_num = cfg->thread_idx + cfg->starting_core;
     int rw_ratio = cfg->read_ratio;  // rw_ratio can be 1, 2, 3.
     int mixed_switch = 0;
+    if (cfg->thread_idx % 2 == 0) {
+        mixed_switch = 0;
+    } else {
+        mixed_switch = rw_ratio;
+    }
 
     set_prefetching(cfg->starting_core, cfg->prefetch_en, core_num);
 
     if (cfg->op == MOV) {
+        printf("src: 0x%lx, dst: 0x%lx\n", (uint64_t)src, (uint64_t)dst);
+    }
+    if (cfg->op == MOV_DEVDAX || cfg->op == READ_NT_DEVDAX || cfg->op == MIXED_DEVDAX) {
         printf("src: 0x%lx, dst: 0x%lx\n", (uint64_t)src, (uint64_t)dst);
     }
 
@@ -595,6 +609,14 @@ void bw_wrapper(test_cfg_t* cfg) {
             case MOV:
                 op_movdir64B(src, dst, fixed_step);
                 break;
+            
+            case MOV_DEVDAX:
+                op_movdir64B(src, dst, fixed_step);
+                break;                
+            
+            case READ_NT_DEVDAX:
+                op_ntld(dst, fixed_step);
+                break;
 
             case MIXED:
                 // op_mixed(src, fixed_step, rw_ratio);
@@ -603,6 +625,16 @@ void bw_wrapper(test_cfg_t* cfg) {
                     mixed_switch = 0;
                 } else {
                     op_ld(src, fixed_step);
+                    mixed_switch += 1;
+                }
+                break;
+            
+            case MIXED_DEVDAX:
+                if (mixed_switch == rw_ratio){
+                    op_ntst(dst, fixed_step);
+                    mixed_switch = 0;
+                } else {
+                    op_ntld(dst, fixed_step);
                     mixed_switch += 1;
                 }
                 break;

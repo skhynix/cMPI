@@ -36,7 +36,10 @@ typedef enum test_op {
     WRITE,
     WRITE_NT,
     MOV,
-    MIXED  /* mix read and write */
+    MIXED,  /* mix read and write */
+    MOV_DEVDAX,
+    READ_NT_DEVDAX,
+    MIXED_DEVDAX
 } test_op_t;
 
 typedef enum test_type {
@@ -88,6 +91,7 @@ int parse_arg(int argc, char*argv[], test_cfg_t* cfg);
 int get_node(void* p, uint64_t size);
 
 int init_buf(uint64_t size, int node, char** alloc_ptr);
+int init_buf_from_daxdev(uint64_t size, char** alloc_ptr);
 
 uint64_t read_MSR(int cpu);
 

@@ -5,7 +5,13 @@ OBJ=util.o test.o workload.o main.o
 LDLIBS=-lpthread -lnuma -lm
 
 .PHONY: all
-all: cxlMemTest
+all: cxlMemTest memsetLatencyTest
+
+memsetLatencyTest: memset_latency_test.o
+	$(CC) -o $@ $^ $(CFLAGS) $(LDLIBS)
+
+memset_latency_test.o: memset_latency_test.c
+	$(CC) -c -o $@ $< $(CFLAGS)
 
 %.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
@@ -15,7 +21,7 @@ cxlMemTest: $(OBJ)
 
 .PHONY: clean
 clean:
-	$(RM) *~ *.o cxlMemTest 
+	$(RM) *~ *.o cxlMemTest memsetLatencyTest
 
 debug: CFLAGS+=-g
 debug: cxlMemTest
