@@ -16,14 +16,14 @@ conda install -c conda-forge compilers
 Git Clone
 
 ```
-git clone mpich-4.2.3-cxl-repo mpich-4.2.3-cxl
+git clone --recursive https://github.com/skhynix/cMPI.git
 ```
 
 
 Build MPICH
 
 ```
-cd mpich-4.2.3-cxl
+cd cMPI/mpich
 
 ./autogen.sh
 
