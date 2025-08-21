@@ -27,7 +27,7 @@ typedef struct chase_struct chase_t;
 
 struct chase_struct {
     // 64-bit addr, 64 * 64 = 512 bit per cacheline
-    chase_t* ptr_arr[8]; 
+    chase_t* ptr_arr[8];
 };
 
 typedef enum test_op {
@@ -45,7 +45,7 @@ typedef enum test_op {
 typedef enum test_type {
     LATS_CLFLUSH,
     BW,
-    LATS_CHASE, 
+    LATS_CHASE,
     BLOCK_LATS
 } test_type_t;
 
@@ -61,7 +61,7 @@ typedef struct test_cfg {
     int bw_granu; // number of cache line (n * 64B)
     double tsc_freq; // GHz
 
-    // thread 
+    // thread
     int thread_idx;
     int core_a;
     int core_b;
@@ -79,9 +79,9 @@ typedef struct test_cfg {
     int num_clear_pipe;
 
     // monitoring
-    volatile uint64_t curr_op_cnt; 
+    volatile uint64_t curr_op_cnt;
 
-    // thread sync 	
+    // thread sync
     volatile int halt;
 
 } test_cfg_t;

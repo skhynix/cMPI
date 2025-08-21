@@ -18,18 +18,18 @@ class pmu_metric:
         self.numaRatio_cmd = "sudo sysctl -w vm.numa_tier_interleave={ratio}"
         self.numaRatioTop_cmd = "sudo sysctl -w vm.numa_tier_interleave_top={top}"
         self.numaRatioBot_cmd = "sudo sysctl -w vm.numa_tier_interleave_bot={bottom}"
-        self.toplev_cmd = ["sudo", "/home/yans3/pmu-tools/toplev", "-x,", "-o", "{filename}", "--no-desc", "-I", "1000", "-v", "--nodes", 
+        self.toplev_cmd = ["sudo", "/home/yans3/pmu-tools/toplev", "-x,", "-o", "{filename}", "--no-desc", "-I", "1000", "-v", "--nodes",
                            "!" + self.node_names]
-        self.toplev_realtime_cmd = ["sudo", "/home/yans3/pmu-tools/toplev", "--no-desc", "-I", "1000", "-v", 
+        self.toplev_realtime_cmd = ["sudo", "/home/yans3/pmu-tools/toplev", "--no-desc", "-I", "1000", "-v",
                                     "--nodes", "!" + self.node_names]
         # self.stats = {"L1_Bound":[], "BW_Bound":[], "Lat_Bound":[]}
         self.stats = {}
         for node in self.node_list:
             self.stats[node] = []
-        
+
         if not os.path.exists(self.output_path):
             os.mkdir(self.output_path)
-            
+
 
     def set_ratio(self, top:int, bot:int) -> None:
 
@@ -72,7 +72,7 @@ class pmu_metric:
         print("[COMMAND]", cmd)
         self.p_toplev = subprocess.Popen(cmd, text=True, preexec_fn=os.setsid)
 
-    
+
     def stop_recording(self) -> None:
         # self.fp.close()
         os.killpg(os.getpgid(self.p_toplev.pid), signal.SIGINT)
@@ -105,11 +105,11 @@ class pmu_metric:
         t_toplev = Thread(target=enqueue_output, args=(self.p_toplev.stderr, q_toplev))
         t_toplev.daemon = True
         t_toplev.start()
-        
+
         # define and start the parsing threads
         def catch_output(q:Queue):
             while(True):
-                try: 
+                try:
                     line = q.get_nowait() # or q.get(timeout=.1)
                 except Empty:
                     time.sleep(interval / 1000)  # tune to 0.5 just in case
@@ -132,16 +132,16 @@ class pmu_metric:
         t_catch_latency = Thread(target=catch_output, args=[q_toplev])
         t_catch_latency.daemon = True
         t_catch_latency.start()
-        
+
         if print_info:
             while(True):
                 time.sleep(1)
 
-        
+
     def get_stat(self, window_size:int=5) -> dict:
 
         res = {}
-        
+
         # length = len(self.stats["L1_Bound"])
         # if length >= 1:
         #     series = np.array(self.stats["L1_Bound"][-min(length,window_size):]).astype('float')
@@ -171,7 +171,7 @@ if __name__ == "__main__":
     node_names = ["Backend_Bound.Memory_Bound.DRAM_Bound.MEM_Latency", "Backend_Bound.Memory_Bound.L1_Bound",
             "Backend_Bound.Memory_Bound.DRAM_Bound.MEM_Bandwidth", "Backend_Bound.Memory_Bound",
             "Backend_Bound.Memory_Bound.L2_Bound", "Backend_Bound.Memory_Bound.L3_Bound"]
-    
+
     pmu = pmu_metric(node_names)
     # pmu.set_ratio(10,20)
     # pmu.start_recording("dlrm.csv")

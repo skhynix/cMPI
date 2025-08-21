@@ -41,7 +41,7 @@ char* help_str = " Usage: \n" \
                   "-F   TSC_Freq, used for calculating cycle --> ns. Unit = MHz; default to (2000MHz). Please check with turbostat";
 
 void set_default_cfg(test_cfg_t* cfg) {
-    cfg->op = READ;		
+    cfg->op = READ;
     cfg->type = BW;
     cfg->num_thread = 32;
     cfg->total_buf_size = (1 << 30);
@@ -88,7 +88,7 @@ void print_cfg(test_cfg_t* cfg) {
 
 
 int parse_arg(int argc, char*argv[], test_cfg_t* cfg) {
-    int opt;	
+    int opt;
     int num;
     int read;
     int write;
@@ -262,7 +262,7 @@ int parse_arg(int argc, char*argv[], test_cfg_t* cfg) {
 
     cfg->per_thread_size = cfg->total_buf_size / cfg->num_thread;
     uint64_t calculated_buf_size = cfg->per_thread_size * cfg->num_thread;
-    printf("cal: %lu vs total: %lu\n", calculated_buf_size, cfg->total_buf_size); 
+    printf("cal: %lu vs total: %lu\n", calculated_buf_size, cfg->total_buf_size);
 
     if (calculated_buf_size != cfg->total_buf_size) {
         // reset per thread size to 2^12 byte aligned (avoid AVX run out of addresss)
@@ -271,8 +271,8 @@ int parse_arg(int argc, char*argv[], test_cfg_t* cfg) {
 
     // optind is for the extra arguments
     // which are not parsed
-    for(; optind < argc; optind++){     
-        printf("extra arguments: %s\n", argv[optind]); 
+    for(; optind < argc; optind++){
+        printf("extra arguments: %s\n", argv[optind]);
     }
 
     print_cfg(cfg);
@@ -305,7 +305,7 @@ int get_node(void *p, uint64_t size)
     }
 
 
-    ret = move_pages(0, page_cnt, page_arr, NULL, status, 0); 
+    ret = move_pages(0, page_cnt, page_arr, NULL, status, 0);
     if (ret != 0) {
         fprintf(stderr, "Problem in %s line %d calling move_pages(), ret = %d\n", __FILE__,__LINE__, ret);
         printf("%s\n", strerror(errno));
@@ -379,7 +379,7 @@ int init_buf(uint64_t size, int node, char** alloc_ptr) {
     page_cnt = (size / page_size);
     idx = 0;
     for (uint64_t i = 0; i < page_cnt; i++) {
-        ptr[idx] = 0;	
+        ptr[idx] = 0;
         idx += page_size;
     }
     printf("[INFO] done touching pages. Next, validate on node X\n");
@@ -392,7 +392,7 @@ int init_buf(uint64_t size, int node, char** alloc_ptr) {
     printf("allocated: %luMB\n", (size >> 20));
 
     *alloc_ptr = ptr;
-    
+
     return 0;
 }
 

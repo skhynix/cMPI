@@ -26,7 +26,7 @@ def update_metric(pcm_dict, pmu_dict):
             continue
         val = pcm_dict[k]
         if 'log' in v:
-            val = math.log10(val)        
+            val = math.log10(val)
         if "2)2" in v:
             val = val * val
         metric_dict[v] = val
@@ -37,7 +37,7 @@ def update_metric(pcm_dict, pmu_dict):
             continue
         val = pmu_dict[k]
         if 'log' in v:
-            val = math.log10(val)        
+            val = math.log10(val)
         if "2)2" in v:
             val = val * val
         metric_dict[v] = pmu_dict[k]

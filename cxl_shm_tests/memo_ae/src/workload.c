@@ -43,7 +43,7 @@ void op_ntld(char* addr, long size){
             "mov %[addr], %%r9 \n"
             "xor %%r10, %%r10 \n"
             "LOOP_NTLD: \n"
-            SIZENTLD_MACRO	
+            SIZENTLD_MACRO
             "cmp %[size], %%r10 \n"
             "jl LOOP_NTLD \n"
             : /* output */
@@ -73,7 +73,7 @@ void op_ld(char* addr, long size){
             "mov %[addr], %%r9 \n"
             "xor %%r10, %%r10 \n"
             "LOOP_LD: \n"
-            SIZELD_MACRO	
+            SIZELD_MACRO
             "cmp %[size], %%r10 \n"
             "jl LOOP_LD \n"
             : /* output */
@@ -215,7 +215,7 @@ void op_mixed(char* addr, long size, int ratio){
 }
 
 /**
- * op_stall 
+ * op_stall
  *   @brief stall the core by issuing nop
  */
 
@@ -512,9 +512,9 @@ uint64_t op_stwb_block_lat(char* addr, bool flush_block, long num_clear_pipe) {
             "LOOP_BLOCK_STWB_START: \n"
             "xor %%r10, %%r10 \n"
 
-            // Test 
+            // Test
             TIMING_BEGIN
-            STWB_xN_RAND_AVX512 
+            STWB_xN_RAND_AVX512
             TIMING_END
 
             :[t_start] "=r" (t_start), [t_end] "=r" (t_end)
@@ -553,7 +553,7 @@ uint64_t op_ld_block_lat(char* addr, bool flush_block, long num_clear_pipe) {
             "LOOP_BLOCK_LD_START: \n"
             "xor %%r10, %%r10 \n"
 
-            // Test 
+            // Test
             TIMING_BEGIN
             LD_xN_RAND_AVX512
             TIMING_END
@@ -593,7 +593,7 @@ uint64_t op_ntld_block_lat(char* addr, bool flush_block, long num_clear_pipe) {
             "LOOP_BLOCK_NTLD_START: \n"
             "xor %%r10, %%r10 \n"
 
-            // Test 
+            // Test
             TIMING_BEGIN
             NTLD_xN_RAND_AVX512
             TIMING_END
@@ -633,7 +633,7 @@ uint64_t op_ntst_block_lat(char* addr, bool flush_block, long num_clear_pipe) {
             "LOOP_BLOCK_NTST_START: \n"
             "xor %%r10, %%r10 \n"
 
-            // Test 
+            // Test
             TIMING_BEGIN
             NTST_xN_RAND_AVX512
             "sfence \n"
@@ -650,7 +650,7 @@ void set_all_zmm(char* addr) {
     asm volatile(
         "mov %[addr], %%r9 \n"
         "xor %%r10, %%r10 \n"
-        SIZELD_MACRO	
+        SIZELD_MACRO
         "mfence\n"
         : /* output */
         :[addr]"r"(addr) /* input */

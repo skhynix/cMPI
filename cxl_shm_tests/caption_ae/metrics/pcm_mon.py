@@ -19,8 +19,8 @@ class pcm_metric:
         self.pcmAll_cmd = ["sudo", PCM_PATH + "pcm", "-nc", "-ns"]
 
         self.stats = {
-                "pcm_l1miss":[], 
-                "pcm_ddrReadLat":[], 
+                "pcm_l1miss":[],
+                "pcm_ddrReadLat":[],
                 "pcm_norm_ipc":[],
                 "pcm_ipc":[]}
 
@@ -86,7 +86,7 @@ class pcm_metric:
             lines = ""
             result_arr = []
             while(True):
-                try: 
+                try:
                     line = q.get_nowait()
                 except Empty:
                     time.sleep(1)  # tune to 0.5 just in case
@@ -122,7 +122,7 @@ class pcm_metric:
                             ipc = float(line_arr[3])
                             result_arr.append((norm_ipc, ipc))
                             '''
-                            if int(line_arr[0]) > 7: 
+                            if int(line_arr[0]) > 7:
                                 result_arr.append((norm_ipc, ipc))
                             '''
 
@@ -132,7 +132,7 @@ class pcm_metric:
             pattern_norm_ipc = re.compile(r"Instructions per nominal CPU cycle: ([0-9]+\.[0-9]+)")
             pattern_ipc = re.compile(r" PHYSICAL CORE IPC                 : ([0-9]+\.[0-9]+)")
             while(True):
-                try: 
+                try:
                     line = q.get_nowait()
                 except Empty:
                     time.sleep(1)  # tune to 0.5 just in case
@@ -140,12 +140,12 @@ class pcm_metric:
                     lines += line
                     if line == "---------------------------------------------------------------------------------------------------------------\n":
                         matches = pattern_norm_ipc.findall(lines)
-                        if matches: 
+                        if matches:
                             if print_info: print("norm IPC: " + matches[0])
                             self.stats["pcm_norm_ipc"].append(float(matches[0]))
 
                         matches = pattern_ipc.findall(lines)
-                        if matches: 
+                        if matches:
                             if print_info: print("IPC: " + matches[0])
                             self.stats["pcm_ipc"].append(float(matches[0]))
                         lines = ""
@@ -153,7 +153,7 @@ class pcm_metric:
         def catch_output_latency(q:Queue):
             lines = ""
             while(True):
-                try: 
+                try:
                     line = q.get_nowait()
                 except Empty:
                     time.sleep(1)  # tune to 0.5 just in case
@@ -163,7 +163,7 @@ class pcm_metric:
                         # q_out.put(lines)
                         pattern = re.compile(r"L1 Cache Miss Latency\(ns\) \[Adding 5 clocks for L1 Miss\]\n+Socket0: ([0-9]+\.[0-9]+)")
                         matches = pattern.findall(lines)
-                        if matches: 
+                        if matches:
                             if print_info: print("[RESULT] L1 Miss Latency:" + matches[0])
                             self.stats["pcm_l1miss"].append(float(matches[0]))
 

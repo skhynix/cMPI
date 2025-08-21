@@ -18,7 +18,7 @@ for ((src=0;src<=$NODE_MAX;src++)); do
                 continue
             fi
             echo "[TEST] src: $src dst: $dst, num_thread: $i......"
-            THROUGHPUT=`sudo ../src/cxlMemTest -p $CLOSEST_CORE -f -t $i -S 6 -n $src -d $dst -T 1 -o 6 -i $ITERATION | awk '/get_bw/ {print}'` 
+            THROUGHPUT=`sudo ../src/cxlMemTest -p $CLOSEST_CORE -f -t $i -S 6 -n $src -d $dst -T 1 -o 6 -i $ITERATION | awk '/get_bw/ {print}'`
             BW=`echo $THROUGHPUT | awk '{print $(NF-1)}'`
             echo $BW >> $CURR_RESULT_PATH/s${src}_d${dst}.txt
             echo $THROUGHPUT

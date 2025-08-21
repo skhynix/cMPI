@@ -28,7 +28,7 @@ for ((j=0;j<=$NODE_MAX;j++)); do
             # A-B, B-B, B-C are sufficient to show Local-NUMA, Local-Local, Local-CXL
 
             echo "[TEST] node: $j, op: $k, num_thread: $i......"
-            THROUGHPUT=`sudo ../src/cxlMemTest -t $i -S 6 -n $j -d $j -T 1 -o $k -i $ITERATION -p $CLOSEST_CORE -f | awk '/get_bw/ {print}'` 
+            THROUGHPUT=`sudo ../src/cxlMemTest -t $i -S 6 -n $j -d $j -T 1 -o $k -i $ITERATION -p $CLOSEST_CORE -f | awk '/get_bw/ {print}'`
             BW=`echo $THROUGHPUT | awk '{print $(NF-1)}'`
             echo $BW >> $CURR_RESULT_PATH/seq_bw_op${k}_core${CLOSEST_CORE}_mem${j}.txt
             echo $THROUGHPUT

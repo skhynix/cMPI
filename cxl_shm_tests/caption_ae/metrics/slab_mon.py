@@ -17,7 +17,7 @@ class slab_metric:
         self.window_size = window_size
         for i in range(window_size):
             self.stats['alloc_sum'].append(0)
-            
+
     def run_realtime(self, interval=1000, print_info=True) -> None:
 
         # define the SIGINT handler
@@ -43,12 +43,12 @@ class slab_metric:
         t_slab = Thread(target=enqueue_output, args=(self.p_slab.stdout, q_slab))
         t_slab.daemon = True
         t_slab.start()
-        
+
         # define and start the parsing threads
         def catch_output(q:Queue):
             curr_sum = 0
             while(True):
-                try: 
+                try:
                     line = q.get_nowait() # or q.get(timeout=.1)
                 except Empty:
                     time.sleep(interval / 1000)  # tune to 0.5 just in case
@@ -59,12 +59,12 @@ class slab_metric:
                         float(line[-1])
                     except ValueError:
                         continue
-                    
+
                     if "loadavg" in line[1]:
                         self.moving_sum += curr_sum
                         self.cnt += 1
                         if self.cnt >= self.window_size:
-                            self.moving_sum -= self.stats['alloc_sum'][self.cnt % self.window_size] 
+                            self.moving_sum -= self.stats['alloc_sum'][self.cnt % self.window_size]
 
                         if print_info:
                             print('mov', self.moving_sum, 'curr', curr_sum)
@@ -82,12 +82,12 @@ class slab_metric:
         t_catch_latency = Thread(target=catch_output, args=[q_slab])
         t_catch_latency.daemon = True
         t_catch_latency.start()
-        
+
         if print_info:
             while(True):
                 time.sleep(1)
 
-        
+
     def get_stat(self) -> int:
         return self.moving_sum / self.window_size
 

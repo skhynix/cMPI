@@ -3,7 +3,7 @@ This repository contains two parts:
 1. **memo** -- a versatile benchmark for CXL-related memory behaviors and characterizations.
 2. **caption** -- a performance tuning (based on memory page allocation) tool to maximize the system memory bandwidth utilazation in a CXL-enabled system.
 
-They are the correpsonding artifacts of the paper `Demystifying CXL Memory with True CXL-Ready Systems and CXL Memory Devices (MICRO'23)`, the first research work of CXL memory characterization based on real CXL hardware devices. 
+They are the correpsonding artifacts of the paper `Demystifying CXL Memory with True CXL-Ready Systems and CXL Memory Devices (MICRO'23)`, the first research work of CXL memory characterization based on real CXL hardware devices.
 
 For the artifact evaluation configurations, please refer to [link to config repo](https://github.com/ece-fast-lab/cxl_type3_tests_ae)
 

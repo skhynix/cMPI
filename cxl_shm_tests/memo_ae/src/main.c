@@ -68,5 +68,5 @@ out1:
     numa_free(cfg->buf_a, cfg->total_buf_size);
 out:
     free(cfg);
-    return 0;	
+    return 0;
 }

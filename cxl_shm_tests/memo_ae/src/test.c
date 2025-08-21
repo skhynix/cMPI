@@ -41,7 +41,7 @@
 void set_data_buf(char* data_buf, uint64_t size) {
     fprintf(stdout, "[set_data_buf] \n");
     for (uint64_t i = 0; i < size; i++) {
-        data_buf[i] = i; 
+        data_buf[i] = i;
     }
 }
 
@@ -105,7 +105,7 @@ void intHandler(int dummy) {
     keepRunning = 0;
 }
 
-/** 
+/**
  * get_bw
  *   @brief Read the curr_op_cnt from each thread and calculate the sum every *delay* microsecond.
  *   @param cfg_arr array of config.
@@ -143,12 +143,12 @@ void get_bw(test_cfg_t* cfg_arr, int iter, int delay) {
  *					operation
  */
 
-// spawn thread 
+// spawn thread
 int run_test(test_cfg_t* cfg) {
     pthread_t* thread_arr;
     test_cfg_t* cfg_arr;
     test_cfg_t* curr_cfg;
-    int ret, num_thread; 
+    int ret, num_thread;
 
     // just in case
     signal(SIGINT, intHandler);
@@ -170,7 +170,7 @@ int run_test(test_cfg_t* cfg) {
         clear_buff(cfg->buf_b, cfg->total_buf_size);
     }
 #endif
-    
+
     // launch thread
     for (int i = 0; i < num_thread; i++) {
         curr_cfg = &(cfg_arr[i]);
@@ -186,7 +186,7 @@ int run_test(test_cfg_t* cfg) {
         }
         if (cfg->op == MOV_DEVDAX || cfg->op == READ_NT_DEVDAX || cfg->op == MIXED_DEVDAX) {
             curr_cfg->start_addr_b = &(curr_cfg->buf_b[i * curr_cfg->per_thread_size]);
-        } 
+        }
         ret = pthread_create(&thread_arr[i], NULL, thread_wrapper, (void*)curr_cfg);
     }
 
@@ -196,18 +196,18 @@ int run_test(test_cfg_t* cfg) {
             // do nothing, latency is monitored within a single thread
             break;
         case BW:
-            get_bw(cfg_arr, cfg->op_iter, WAIT_SEC_US); 
+            get_bw(cfg_arr, cfg->op_iter, WAIT_SEC_US);
             break;
         case LATS_CHASE:
             // do nothing, latency is monitored within a single thread
             break;
         case BLOCK_LATS:
             // do nothing, latency is monitored within a single thread
-            break; 
+            break;
         default:
             fprintf(stderr, "unknown type, thread idx: %d\n", cfg->thread_idx);
     }
-    
+
     if (cfg->type == BW) {
         stop_threads(cfg_arr);
     }
@@ -326,7 +326,7 @@ void restore_prefetching(int starting_core, bool prefetch_en, int core_num) {
 void lats_chase_wrapper(test_cfg_t* cfg) {
     uint64_t result, latency_sum = 0;
     uint64_t min, max;
-    uint64_t num_chase_block; 
+    uint64_t num_chase_block;
     int core_num = cfg->thread_idx + cfg->starting_core;
 
     if (cfg->start_addr_a == NULL) {
@@ -335,7 +335,7 @@ void lats_chase_wrapper(test_cfg_t* cfg) {
     }
 
     num_chase_block = init_ptr_buf(cfg);
-    
+
     set_prefetching(cfg->starting_core, cfg->prefetch_en, core_num);
 
     cfg->op_iter += 1; // for warm up
@@ -368,16 +368,16 @@ void lats_chase_wrapper(test_cfg_t* cfg) {
 
 /*
  * This function tests multi-operation latency.
- * The scheme here goes as:  
+ * The scheme here goes as:
  *  flush cacheline <optional, parameter -B>
  *      mfence
  *  issue many nop <optional, parameter -C>
  *  mark time1
  *      issue X ops
- *  mark time2 
+ *  mark time2
  *
  * In most cases, the latency goes down as more ops
- *  are issued in parallel. 
+ *  are issued in parallel.
  */
 void block_lats_wrapper(test_cfg_t* cfg) {
     uint64_t result, latency_sum = 0;
@@ -430,12 +430,12 @@ out:
 
 /*
  * This function tests single operation latency.
- * The scheme here goes as:  
+ * The scheme here goes as:
  *  flush cacheline
  *  issue many nop
  *  mark time1
  *      issue 1 op
- *  mark time2 
+ *  mark time2
  *
  * In most cases, the latency here is very high,
  *  and the actual interpretation of this latency
@@ -452,7 +452,7 @@ void lats_clflush_wrapper(test_cfg_t* cfg) {
     result_buff = malloc(sizeof(uint64_t) * cfg->op_iter);
 
     set_prefetching(cfg->starting_core, cfg->prefetch_en, core_num);
-    
+
     flush_all_cache();
 
     switch (cfg->op)
@@ -526,7 +526,7 @@ void lats_clflush_wrapper(test_cfg_t* cfg) {
     }
     print_lats(cfg, min, max, latency_sum, 0);
     print_lats_median(cfg, result_buff);
-    
+
     restore_prefetching(cfg->starting_core, cfg->prefetch_en, core_num);
 
     free(result_buff);
@@ -609,11 +609,11 @@ void bw_wrapper(test_cfg_t* cfg) {
             case MOV:
                 op_movdir64B(src, dst, fixed_step);
                 break;
-            
+
             case MOV_DEVDAX:
                 op_movdir64B(src, dst, fixed_step);
-                break;                
-            
+                break;
+
             case READ_NT_DEVDAX:
                 op_ntld(dst, fixed_step);
                 break;
@@ -628,7 +628,7 @@ void bw_wrapper(test_cfg_t* cfg) {
                     mixed_switch += 1;
                 }
                 break;
-            
+
             case MIXED_DEVDAX:
                 if (mixed_switch == rw_ratio){
                     op_ntst(dst, fixed_step);
@@ -643,9 +643,9 @@ void bw_wrapper(test_cfg_t* cfg) {
                 fprintf(stderr, "unknown op, thread idx: %d\n", cfg->thread_idx);
                 goto out;
         }
-        // ==================================== 
+        // ====================================
         //              Stepping, rand/seq
-        // ==================================== 
+        // ====================================
         // increment number of byte operated on
         cfg->curr_op_cnt += fixed_step;
 
@@ -661,14 +661,14 @@ void bw_wrapper(test_cfg_t* cfg) {
         src += curr_step;
         dst += curr_step;
 
-        // ==================================== 
+        // ====================================
         //              Stalling
-        // ==================================== 
+        // ====================================
         // create artificial stalling if desired
         stall_cnt = 0;
         while (stall_cnt < cfg->stall_ratio) {
             op_stall();
-            stall_cnt++; 
+            stall_cnt++;
         }
 
         if (cfg->halt) {
@@ -735,7 +735,7 @@ void* thread_wrapper(void* arg) {
             lats_clflush_wrapper(cfg);
             break;
         case BW:
-            bw_wrapper(cfg);	
+            bw_wrapper(cfg);
             break;
         case LATS_CHASE:
             lats_chase_wrapper(cfg);

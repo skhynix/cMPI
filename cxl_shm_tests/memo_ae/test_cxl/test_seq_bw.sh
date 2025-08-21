@@ -20,7 +20,7 @@ for ((j=0;j<=$NODE_MAX;j++)); do
             fi
 
             echo "[TEST] node: $j, op: $k, num_thread: $i......"
-            THROUGHPUT=`sudo ../src/cxlMemTest -p $CLOSEST_CORE -f -t $i -S 6 -n $j -d $j -T 1 -o $k -i $ITERATION | awk '/get_bw/ {print}'` 
+            THROUGHPUT=`sudo ../src/cxlMemTest -p $CLOSEST_CORE -f -t $i -S 6 -n $j -d $j -T 1 -o $k -i $ITERATION | awk '/get_bw/ {print}'`
             BW=`echo $THROUGHPUT | awk '{print $(NF-1)}'`
             echo $BW >> $CURR_RESULT_PATH/seq_bw_$k.txt
             echo $THROUGHPUT

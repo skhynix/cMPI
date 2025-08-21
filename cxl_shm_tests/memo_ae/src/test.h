@@ -3,7 +3,7 @@
 #include "util.h"
 #include <pthread.h>
 
-// spawn thread 
+// spawn thread
 int run_test(test_cfg_t* cfg);
 
 // dispatch to different workload wrappers

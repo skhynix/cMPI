@@ -1,4 +1,4 @@
-import random 
+import random
 import time
 from threading  import Thread
 import math
@@ -25,13 +25,13 @@ print("=======================")
 
 class caption_ctrl:
     def __init__(self) -> None:
-        self.arr = {'norm_ipc': [], 
-                    'L1.miss.lats': [], 
+        self.arr = {'norm_ipc': [],
+                    'L1.miss.lats': [],
                     'DDR.read.lats': []}
         self.prev_state = -1
         self.prev_step = STEP_RESET
         self.prev_ratio = IL_BOT_RESET
-    
+
     def run_realtime(self, log_level=LOG_DEBUG)->None:
         pcm = pcm_metric()
         pcm_thread = Thread(target=pcm.run_realtime, args=(False,))
@@ -77,7 +77,7 @@ class caption_ctrl:
                 return
         else:
             log_action(bcolors.OKCYAN, "=============== TUNE -- not enough samples ================ ")
-            log_action(bcolors.OKCYAN, "=============== TUNE -- need: %d, has: %d samples ================ " % (MIN_SAMPLE_CNT, 
+            log_action(bcolors.OKCYAN, "=============== TUNE -- need: %d, has: %d samples ================ " % (MIN_SAMPLE_CNT,
                                                                                                     len(self.arr['norm_ipc'])))
             return
 

@@ -5,10 +5,10 @@ from config import *
 #   curr state
 #   prev state
 #   prev stepping
-#   bot ratio 
+#   bot ratio
 # Output (returned to the caller)
 #   curr stepping
-#   new bot ratio 
+#   new bot ratio
 
 # In this implementation, the top is fixed to some ratio
 #   The bot is tunned in some range of value
@@ -32,8 +32,8 @@ def algo(dynamic_state, static_state, prev_step, bot_ratio):
             return MIN_STEP , bot_ratio
     elif abs_diff > RESET_THRESHOLD:
         log_action(bcolors.WARNING, "Reset")
-        reset_default() 
-        return STEP_RESET, -1 
+        reset_default()
+        return STEP_RESET, -1
 
     # ================================== step
     curr_step = prev_step
@@ -55,7 +55,7 @@ def algo(dynamic_state, static_state, prev_step, bot_ratio):
     log_debug("post-bound step = " + str(curr_step))
 
     ## ================================== bound ratio
-    bot_ratio += curr_step 
+    bot_ratio += curr_step
     if bot_ratio <= 1: # cap at ddr:cxl = 10:1
         log_action(bcolors.WARNING, "lower bound: bot{0}, step{1}".format(bot_ratio, curr_step))
         bot_ratio = 1

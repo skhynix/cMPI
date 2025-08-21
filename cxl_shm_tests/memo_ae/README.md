@@ -10,14 +10,14 @@
 
 ### Clone & Build
 ```bash
-git clone https://github.com/ece-fast-lab/cxl_type3_tests.git 
+git clone https://github.com/ece-fast-lab/cxl_type3_tests.git
 cd memo_ae/src
 make
 ```
 
 ### Get Turbo stat
 ```bash
-# under memo_ae 
+# under memo_ae
 cd ./test_cxl/
 bash get_turbostat.sh
 ```
@@ -27,13 +27,13 @@ bash get_turbostat.sh
 # Use your favorite editor to open env.sh
 vim ../util_scripts/env.sh
 ```
-1. Set `CLOSEST_NODE`: The NUMA node that the CXL device is directly attached to.  
+1. Set `CLOSEST_NODE`: The NUMA node that the CXL device is directly attached to.
     - Command `sudo lspci -vvv` should also show the NUMA node that a CXL device attaches to.
-2. Set `CLOSEST_CORE`: This is one of the CPU cores within CLOSEST NODE 
-    - Place the first core number of the `CLOSEST_NODE` in `CLOSEST_CORE`. You may find the core range of a NUMA node using this command: `numactl -H`. 
-    - For example, if CXL is connected to NUMA node 1, please place the first CPU in `node 1 cpus: XX, XX+1` (XX) in `CLOSEST_CPU`. 
+2. Set `CLOSEST_CORE`: This is one of the CPU cores within CLOSEST NODE
+    - Place the first core number of the `CLOSEST_NODE` in `CLOSEST_CORE`. You may find the core range of a NUMA node using this command: `numactl -H`.
+    - For example, if CXL is connected to NUMA node 1, please place the first CPU in `node 1 cpus: XX, XX+1` (XX) in `CLOSEST_CPU`.
 3. Set `TSC_FREQ`:
-    - This should be the output from `Test Turbo stat` in `results/turbostat.txt`, it should look like this: 
+    - This should be the output from `Test Turbo stat` in `results/turbostat.txt`, it should look like this:
 4. Set `MAX_NODE`
     - For a machine with 2 socket and 1 CXL node, this should be set to "2"
     - For a machine with 1 socket and 1 CXL node, this should be set to "1"
@@ -79,21 +79,21 @@ Core	CPU	Avg_MHz	Busy%	Bzy_MHz	TSC_MHz	IPC	IRQ	SMI	POLL	C1	C1E	C3	C6	POLL%	C1%	C
 | g | Bandwidth test access block size | 512 | 16 - (per thread buff size / 64) | The MACROs for bandwidth tests are all 1024 Byte, thus the smallest stepping would be 16 cachlines |
 | r | Random bandwidth test | disabled | -r | This argument will trigger the next block of access to increment by a somewhat random fashion. However, accesses within a block remains sequential |
 | o | Operation | 0 (Load) | 0 - 4 | <ul><li>0 = Load</li><li>1 = NT-load</li><li>2 = Store</li><li>3 = Nt-store</li><li>4 = movdir64B (only in bandwidth tests)|
-| B | Flush before block access latency test | NOT flushed | -B | Used only in `-T 3`, this argument decides whether the 64KB region to be access will be flushed. | 
+| B | Flush before block access latency test | NOT flushed | -B | Used only in `-T 3`, this argument decides whether the 64KB region to be access will be flushed. |
 | C | Number of `nop` blocks before block access latency test | 0 | 0 - X | Used only in `-T 3`, this argument decides how many blocks of `nop` should be issued after the cacheline flushes (if there's any) and before the test begines.  |
-| F | TSC frequnecy | 2GHz | X | This value should **always** present for any latency tests. Please refer to the turbostat section for determining this value. | 
+| F | TSC frequnecy | 2GHz | X | This value should **always** present for any latency tests. Please refer to the turbostat section for determining this value. |
 
 
 ## Other profilings
 Under `./test_cxl/`
 #### Block access (fast) < 5 min
 ```
-bash test_block_access_latency.sh 
+bash test_block_access_latency.sh
 ```
 
 #### Ptr chasing (fast) < 5 min
 ```
-bash test_ptr_chase.sh 
+bash test_ptr_chase.sh
 ```
 
 #### Single operation latency (fast) < 5 min
@@ -135,9 +135,9 @@ bash test_memset_lat_clflush.sh
 bash test_memset_lat_clflushopt.sh
 
 ## Results
-All results are under the `results` folder. 
+All results are under the `results` folder.
 
 
-## Acknowledgement  
+## Acknowledgement
 Some parts of this source code and the methodology are inspired by the marvalous work in this [publication(FAST20-Yang)](https://www.usenix.org/conference/fast20/presentation/yang) and this [reposiroty(OptaneStudy)](https://github.com/NVSL/OptaneStudy/tree/master).
 

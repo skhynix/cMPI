@@ -11,36 +11,36 @@
 
 /*
 #define BLOCK_xN 1
-#define LD_xN_RAND_AVX512   LD_x1_RAND_AVX512 
-#define STWB_xN_RAND_AVX512 STWB_x1_RAND_AVX512 
-#define NTLD_xN_RAND_AVX512 NTLD_x1_RAND_AVX512 
-#define NTST_xN_RAND_AVX512 NTST_x1_RAND_AVX512 
+#define LD_xN_RAND_AVX512   LD_x1_RAND_AVX512
+#define STWB_xN_RAND_AVX512 STWB_x1_RAND_AVX512
+#define NTLD_xN_RAND_AVX512 NTLD_x1_RAND_AVX512
+#define NTST_xN_RAND_AVX512 NTST_x1_RAND_AVX512
 */
 
 /*
 #define BLOCK_xN 8
-#define LD_xN_RAND_AVX512   LD_x8_RAND_AVX512 
-#define STWB_xN_RAND_AVX512 STWB_x8_RAND_AVX512 
-#define NTLD_xN_RAND_AVX512 NTLD_x8_RAND_AVX512 
-#define NTST_xN_RAND_AVX512 NTST_x8_RAND_AVX512 
+#define LD_xN_RAND_AVX512   LD_x8_RAND_AVX512
+#define STWB_xN_RAND_AVX512 STWB_x8_RAND_AVX512
+#define NTLD_xN_RAND_AVX512 NTLD_x8_RAND_AVX512
+#define NTST_xN_RAND_AVX512 NTST_x8_RAND_AVX512
 */
 
 #define BLOCK_xN 16
-#define LD_xN_RAND_AVX512   LD_x16_RAND_AVX512 
-#define STWB_xN_RAND_AVX512 STWB_x16_RAND_AVX512 
-#define NTLD_xN_RAND_AVX512 NTLD_x16_RAND_AVX512 
-#define NTST_xN_RAND_AVX512 NTST_x16_RAND_AVX512 
-//#define LD_xN_RAND_AVX512   LD_LFENCE_x16_RAND_AVX512 
-//#define STWB_xN_RAND_AVX512 STWB_SFENCE_x16_RAND_AVX512 
-//#define NTLD_xN_RAND_AVX512 NTLD_LFENCE_x16_RAND_AVX512 
-//#define NTST_xN_RAND_AVX512 NTST_SFENCE_x16_RAND_AVX512 
+#define LD_xN_RAND_AVX512   LD_x16_RAND_AVX512
+#define STWB_xN_RAND_AVX512 STWB_x16_RAND_AVX512
+#define NTLD_xN_RAND_AVX512 NTLD_x16_RAND_AVX512
+#define NTST_xN_RAND_AVX512 NTST_x16_RAND_AVX512
+//#define LD_xN_RAND_AVX512   LD_LFENCE_x16_RAND_AVX512
+//#define STWB_xN_RAND_AVX512 STWB_SFENCE_x16_RAND_AVX512
+//#define NTLD_xN_RAND_AVX512 NTLD_LFENCE_x16_RAND_AVX512
+//#define NTST_xN_RAND_AVX512 NTST_SFENCE_x16_RAND_AVX512
 
 /*
 #define BLOCK_xN 32
-#define LD_xN_RAND_AVX512   LD_x32_RAND_AVX512 
-#define STWB_xN_RAND_AVX512 STWB_x32_RAND_AVX512 
-#define NTLD_xN_RAND_AVX512 NTLD_x32_RAND_AVX512 
-#define NTST_xN_RAND_AVX512 NTST_x32_RAND_AVX512 
+#define LD_xN_RAND_AVX512   LD_x32_RAND_AVX512
+#define STWB_xN_RAND_AVX512 STWB_x32_RAND_AVX512
+#define NTLD_xN_RAND_AVX512 NTLD_x32_RAND_AVX512
+#define NTST_xN_RAND_AVX512 NTST_x32_RAND_AVX512
 */
 
 void op_ntld(char* addr, long size);
@@ -660,7 +660,7 @@ void dump_zmm(char* dst, uint64_t size);
  * - RAX holds t_start
  */
 
-/** Douglas: read this blog for more info about timing 
+/** Douglas: read this blog for more info about timing
  * 	http://sites.utexas.edu/jdm4372/2018/07/23/comments-on-timing-short-code-sections-on-intel-processors/
 */
 #define TIMING_BEGIN      	"rdtscp \n" \
@@ -711,7 +711,7 @@ void dump_zmm(char* dst, uint64_t size);
 							"nop \nnop \nnop \nnop \nnop \nnop \n" \
 							"nop \nnop \nnop \nnop \nnop \nnop \n" \
 							"nop \nnop \nnop \nnop \nnop \nnop \n" \
-							"nop \nnop \nnop \nnop \nnop \nnop \n" 
+							"nop \nnop \nnop \nnop \nnop \nnop \n"
 
 #define CLEAR_PIPELINE_x16  CLEAR_PIPELINE \
             CLEAR_PIPELINE \

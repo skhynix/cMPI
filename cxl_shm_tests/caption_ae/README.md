@@ -16,19 +16,19 @@
 
 ### Clone
 ```bash
-$ git clone https://github.com/ece-fast-lab/cxl_type3_tests.git 
-$ cd caption_ae 
+$ git clone https://github.com/ece-fast-lab/cxl_type3_tests.git
+$ cd caption_ae
 ```
 
 ## Notes
 * The interleaving ratio is applied to `libnuma`, `numactl --interleave` calls for memory interleaving **allocations**. Therefore, the ratio is only applied upon new memory allocations. This is orthogonal to works on memory migration.
 * Currently, `Caption` assumes major memory allocation happens when the application launches, and thus, the tuning happesns at the end of each iteration of an application and before its next launch.
-* Caption is independent of application output and only monitors system performance counters. However, in some cases, it may be desirable to have application output as a feed back on the direction of tunning. We leave the enhancement of the monitoring scheme as a future work. 
+* Caption is independent of application output and only monitors system performance counters. However, in some cases, it may be desirable to have application output as a feed back on the direction of tunning. We leave the enhancement of the monitoring scheme as a future work.
 * Although `IPC` alone may seems sufficient, `L1 latency` and `DDR latency` are here to assit the model to identify subtle change in application's performance.
 
-## Known issues 
+## Known issues
 * If the tunning time interval is too small, `Caption` may not be able to capture enough information about the system state.
-* If the tuning stepping is too small, `Caption` may not be able to correctly indentify if the direction is correct -- i.e. the performance difference is too subtle. 
+* If the tuning stepping is too small, `Caption` may not be able to correctly indentify if the direction is correct -- i.e. the performance difference is too subtle.
 
 ## Arguments
 | Argument | Brief description | Default | Valid inputs | Note |

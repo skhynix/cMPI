@@ -19,14 +19,14 @@ args = parser.parse_args()
 #print(args.echo)
 def exec_cmd_and_wait(sh_path):
     print(sh_path)
-    subprocess.call(["sudo", "bash", sh_path]) 
+    subprocess.call(["sudo", "bash", sh_path])
 
 def exec_cmd_and_wait_arg(sh_path):
     sh_path_arr = sh_path.split()
-    sh_path_arr.insert(0, "bash") 
-    sh_path_arr.insert(0, "sudo") 
+    sh_path_arr.insert(0, "bash")
+    sh_path_arr.insert(0, "sudo")
     print(sh_path_arr)
-    subprocess.call(sh_path_arr) 
+    subprocess.call(sh_path_arr)
 
 def sync_tune():
     # start monitor
@@ -42,7 +42,7 @@ def sync_tune():
     try:
         while True:
             print("sync tuning iteration: %d" % (tune_iter))
-                
+
             # run exec
             exec_cmd_and_wait(args.sh_path)
 
@@ -75,7 +75,7 @@ def async_tune():
     tune_iter = 0
     first_time = True
 
-    # read path 
+    # read path
     # (t, sh_path)
     thread_arr = []
     tune_mask = []
@@ -88,7 +88,7 @@ def async_tune():
 
             # FIXME, set to the desired mask
             tune_mask.append(True)
-            # for example: tune whenever "roms" ended 
+            # for example: tune whenever "roms" ended
             #tune_mask.append("roms" in line)
 
     for t, _ in thread_arr:
@@ -99,7 +99,7 @@ def async_tune():
     try:
         while True:
             print("async tuning iteration: %d" % (tune_iter))
-            
+
             found_end = False
             # This will find the targeted ending thread
             while found_end is False:
@@ -119,7 +119,7 @@ def async_tune():
                             found_end = True
                             break
 
-                    # sleep, avoid spinning 
+                    # sleep, avoid spinning
                     time.sleep(1)
 
             # tune
