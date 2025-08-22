@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Todo: change DIR
-export DIR=/home/sherry/MPI_over_CXL/mpi_run_bench
-export CONDA_DIR=/home/sherry/miniconda3/envs
+export DIR=${HOME}/cMPI/mpi_run_bench
+export CONDA_DIR=${HOME}/miniconda3/envs
 
 function func_cache_flush() {
     echo 3 | sudo tee /proc/sys/vm/drop_caches

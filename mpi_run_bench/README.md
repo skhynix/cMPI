@@ -1,6 +1,6 @@
 ## Build environment
 
-### Build environment for MPI over CXL
+### Build environment for cMPI (MPI over CXL)
 
 Create Conda Env
 
@@ -132,27 +132,27 @@ cd ~
 
 Run OMB one-sided latency test
 ```
-source MPI_RUN_BENCH/run_one_sided_lat.sh
+source ${HOME}/cMPI/mpi_run_bench/run_one_sided_lat.sh
 ```
 
 Run OMB one-sided bandwidth test
 ```
-source MPI_RUN_BENCH/run_one_sided_mbw.sh
+source ${HOME}/cMPI/mpi_run_bench/run_one_sided_mbw.sh
 ```
 
 Run OMB two-sided latency test
 ```
-source MPI_RUN_BENCH/run_two_sided_lat.sh
+source ${HOME}/cMPI/mpi_run_bench/run_two_sided_lat.sh
 ```
 
 Run OMB two-sided bandwidth test
 ```
-source MPI_RUN_BENCH/run_two_sided_mbw.sh
+source ${HOME}/cMPI/mpi_run_bench/run_two_sided_mbw.sh
 ```
 
 Run pt2pt bandwidth test using MPICH_CXL with different cell size
 ```
-source MPI_RUN_BENCH/run_cxl_diff_cell.sh
+source ${HOME}/cMPI/mpi_run_bench/run_cxl_diff_cell.sh
 ```
 
 ## Run memset latency evaluation for CXL memory sharing

@@ -1,6 +1,6 @@
 ## Build environment
 
-### Build environment for MPI over CXL
+### Build environment for cMPI (MPI over CXL)
 
 Create Conda Env
 
@@ -16,6 +16,8 @@ conda install -c conda-forge compilers
 Git Clone
 
 ```
+cd $HOME
+
 git clone --recursive https://github.com/skhynix/cMPI.git
 ```
 
@@ -23,7 +25,7 @@ git clone --recursive https://github.com/skhynix/cMPI.git
 Build MPICH
 
 ```
-cd cMPI/mpich
+cd $HOME/cMPI/mpich
 
 ./autogen.sh
 
@@ -37,9 +39,11 @@ Build OMB benchmarks
 ```
 conda activate mpich_cxl
 
+cd $HOME
+
 tar -xzvf osu-micro-benchmarks-7.4.tar.gz -C osu-micro-benchmarks-7.4-mpich_cxl
 
-cd osu-micro-benchmarks-7.4-mpich_cxl
+cd $HOME/osu-micro-benchmarks-7.4-mpich_cxl
 
 ./configure  --prefix=$CONDA_PREFIX/osu-micro-benchmarks CC=$CONDA_PREFIX/bin/mpicc CXX=$CONDA_PREFIX/bin/mpicxx
 
@@ -73,7 +77,7 @@ git checkout v4.2.3
 Build MPICH
 
 ```
-cd mpich-4.2.3
+cd $HOME/mpich-4.2.3
 
 ./autogen.sh
 
@@ -85,11 +89,14 @@ make -j32 && make install
 Build OMB benchmarks
 
 ```
+
+cd $HOME
+
 conda activate mpich
 
 tar -xzvf osu-micro-benchmarks-7.4.tar.gz -C osu-micro-benchmarks-7.4-mpich
 
-cd osu-micro-benchmarks-7.4-mpich
+cd $HOME/osu-micro-benchmarks-7.4-mpich
 
 ./configure  --prefix=$CONDA_PREFIX/osu-micro-benchmarks CC=$CONDA_PREFIX/bin/mpicc CXX=$CONDA_PREFIX/bin/mpicxx
 
@@ -127,38 +134,38 @@ bash gen_cxl_diff_cell.sh
 
 ## Run OMB evaluation
 ```
-cd ~
+cd $HOME
 ```
 
 Run OMB one-sided latency test
 ```
-source MPI_RUN_BENCH/run_one_sided_lat.sh
+source ${HOME}/cMPI/mpi_run_bench/run_one_sided_lat.sh
 ```
 
 Run OMB one-sided bandwidth test
 ```
-source MPI_RUN_BENCH/run_one_sided_mbw.sh
+source ${HOME}/cMPI/mpi_run_bench/run_one_sided_mbw.sh
 ```
 
 Run OMB two-sided latency test
 ```
-source MPI_RUN_BENCH/run_two_sided_lat.sh
+source ${HOME}/cMPI/mpi_run_bench/run_two_sided_lat.sh
 ```
 
 Run OMB two-sided bandwidth test
 ```
-source MPI_RUN_BENCH/run_two_sided_mbw.sh
+source ${HOME}/cMPI/mpi_run_bench/run_two_sided_mbw.sh
 ```
 
 Run pt2pt bandwidth test using MPICH_CXL with different cell size
 ```
-source MPI_RUN_BENCH/run_cxl_diff_cell.sh
+source ${HOME}/cMPI/mpi_run_bench/run_cxl_diff_cell.sh
 ```
 
 ## Run memset latency evaluation for CXL memory sharing
 Compile the benchmark
 ```
-cd cxl_shm_tests/memo_ae/src/
+cd ${HOME}/cMPI/cxl_shm_tests/memo_ae/src/
 
 make
 ```
@@ -166,7 +173,7 @@ make
 Test latency with uncachable
 
 ```
-cd cxl_shm_tests/memo_ae/test_cxl/
+cd ${HOME}/cMPI/cxl_shm_tests/memo_ae/test_cxl/
 
 bash test_memset_lat_uncacheable.sh
 
@@ -175,7 +182,7 @@ bash test_memset_lat_uncacheable.sh
 Test latency with clflush
 
 ```
-cd cxl_shm_tests/memo_ae/test_cxl/
+cd ${HOME}/cMPI/cxl_shm_tests/memo_ae/test_cxl/
 
 bash test_memset_lat_clflush.sh
 ```
@@ -183,14 +190,14 @@ bash test_memset_lat_clflush.sh
 Test latency with clflushopt
 
 ```
-cd cxl_shm_tests/memo_ae/test_cxl/
+cd ${HOME}/cMPI/cxl_shm_tests/memo_ae/test_cxl/
 
 bash test_memset_lat_clflushopt.sh
 ```
 
 ## Run bandwidh test for CXL memory sharing
 ```
-cd cxl_shm_testss/memo_ae/test_cxl/
+cd ${HOME}/cMPI/cxl_shm_tests/memo_ae/test_cxl/
 
 bash test_seq_bw_devdax_read_nt.sh
 ```
@@ -222,11 +229,11 @@ CXL Memory Sharing (with cache flushing)
 
 ```
 # Latency
-cd ~/cxl_shm_tests/memo_ae/
+cd ${HOME}/cMPI/cxl_shm_tests/memo_ae/test_cxl/
 bash test_memset_lat_clflushopt.sh
 
 # Bandwidth
-cd ~/cxl_shm_tests/memo_ae/
+cd ${HOME}/cMPI/cxl_shm_tests/memo_ae/test_cxl/
 bash test_seq_bw_devdax_read_nt.sh
 ```
 
