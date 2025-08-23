@@ -10,22 +10,22 @@
 
 ### Clone & Build
 ```bash
-git clone https://github.com/ece-fast-lab/cxl_type3_tests.git
-cd memo_ae/src
+git clone https://github.com/skhynix/cMPI.git
+cd cMPI/cxl_shm_tests/memo_ae/src
 make
 ```
 
 ### Get Turbo stat
 ```bash
 # under memo_ae
-cd ./test_cxl/
+cd cMPI/cxl_shm_tests/memo_ae/test_cxl/
 bash get_turbostat.sh
 ```
 
 ### Setup `env.sh`
 ```bash
 # Use your favorite editor to open env.sh
-vim ../util_scripts/env.sh
+vim cMPI/cxl_shm_tests/util_scripts/env.sh
 ```
 1. Set `CLOSEST_NODE`: The NUMA node that the CXL device is directly attached to.
     - Command `sudo lspci -vvv` should also show the NUMA node that a CXL device attaches to.
@@ -85,7 +85,11 @@ Core	CPU	Avg_MHz	Busy%	Bzy_MHz	TSC_MHz	IPC	IRQ	SMI	POLL	C1	C1E	C3	C6	POLL%	C1%	C
 
 
 ## Other profilings
-Under `./test_cxl/`
+
+```
+cd cMPI/cxl_shm_tests/memo_ae/test_cxl/
+```
+
 #### Block access (fast) < 5 min
 ```
 bash test_block_access_latency.sh
@@ -117,27 +121,39 @@ bash test_rand_bw.sh
 ```
 
 #### `movdir64B` bandwidth for deveax (long long) > 15 min
+```
 bash test_movdir_devdax_bw.sh
+```
 
 #### Sequential NT access bandwidth for devdax (long long) > 15 min
+```
 bash test_seq_bw_devdax_read_nt.sh
+```
 
 #### Mixed NT RW bandwidth for devdax (long long) > 15 min
+```
 bash test_mixed_bw_devax_nt.sh
+```
 
 #### Test memset latency in uncacheable
+```
 bash test_memset_lat_uncacheable.sh
+```
 
 #### Test memset latency with clflush
+```
 bash test_memset_lat_clflush.sh
+```
 
 #### Test memset latency with clflushopt
+```
 bash test_memset_lat_clflushopt.sh
+```
 
 ## Results
 All results are under the `results` folder.
 
 
 ## Acknowledgement
-Some parts of this source code and the methodology are inspired by the marvalous work in this [publication(FAST20-Yang)](https://www.usenix.org/conference/fast20/presentation/yang) and this [reposiroty(OptaneStudy)](https://github.com/NVSL/OptaneStudy/tree/master).
+Some parts of this source code and the methodology are inspired by the marvalous work in this [publication(MICRO23-Sun)](https://arxiv.org/abs/2303.15375), this [publication(FAST20-Yang)](https://www.usenix.org/conference/fast20/presentation/yang), and this [reposiroty(OptaneStudy)](https://github.com/NVSL/OptaneStudy/tree/master).
 

@@ -1,3 +1,29 @@
+# cMPI: Using CXL Memory Sharing for MPI One-Sided and Two-Sided Inter-Node Communications
+
+This repository contains artifacts of the paper `cMPI: Using CXL Memory Sharing for MPI One-Sided and
+Two-Sided Inter-Node Communications`, the first work to optimize MPI point-to-point communication (both
+one-sided and two-sided) using CXL memory sharing on a real CXL platform.
+
+There are:
+1. **mpich** -- An enhanced MPI implementation based on MPICH-4.2.3 that utilizes CXL Memory Sharing (CXL-SHM) to improve both one-sided and two-sided inter-node communications.
+2. **cxl_shm_tests** --A comprehensive benchmark suite designed to test the latency and bandwidth of CXL Memory Sharing.
+3. **mpi_run_bench** -- A script generation scaffold for the latency and bandwidth evaluation of MPI point-to-point inter-node communication over different interconnects.
+
+
+For any questions, please 📧 swang166@ucmerced.edu. Thank you😊!
+
+## [Related Publication](https://doi.org/10.1145/3712285.3759816)
+
+```bibtex
+@inproceedings{wang-cmpi,
+  author = {Wang, Xi and Ma, Bin and Kim, Jongryool and Koh, Byungil and Kim, Hoshik and Li, Dong},
+  title = {cMPI: Using CXL Memory Sharing for MPI One-Sided and Two-Sided Inter-Node Communications},
+  booktitle = {Proceedings of the 37th ACM/IEEE International Conference for High Performance Computing, Networking, Storage and Analysis (SC'25)},
+  year = {2025}
+}
+```
+
+
 ## Build environment
 
 ### Build environment for cMPI (MPI over CXL)
@@ -91,6 +117,8 @@ Build OMB benchmarks
 ```
 
 cd $HOME
+
+wget https://mvapich.cse.ohio-state.edu/download/mvapich/osu-micro-benchmarks-7.4.tar.gz
 
 conda activate mpich
 
