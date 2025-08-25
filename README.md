@@ -314,3 +314,13 @@ ib_write_bw --ib-dev=mlx5_1 -s 65536 -n 10000
 ib_write_bw --ib-dev=mlx5_1 -s 65536 -n 1000 server_ip
 
 ```
+
+
+## License
+
+The cMPI is released under GPL v2 license.
+Please see [LICENSE file](LICENSE) for details.
+
+The cxl_shm_tests is based on [cxl_type3_tests](https://github.com/ece-fast-lab/cxl_type3_tests),
+which is also released under GPL v2 license. The cxl_shm_tests extends with more
+tests for CXL shared memory.
