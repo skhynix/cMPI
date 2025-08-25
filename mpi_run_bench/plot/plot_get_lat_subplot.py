@@ -30,23 +30,23 @@ def parse_output_log(file_path):
     """Parse output.log file, extract Size and Bandwidth data"""
     sizes = []
     bandwidths = []
-    
+
     try:
         with open(file_path, 'r') as f:
             content = f.readlines()
-            
+
         # Find where data begins
         data_start = False
         for line in content:
             if 'Size' in line and 'Latency' in line:
                 data_start = True
                 continue
-                
+
             if data_start:
                 # Skip lines containing "cxl shm"
                 if 'cxl shm' in line:
                     continue
-                    
+
                 # Parse data lines
                 parts = line.strip().split()
                 if len(parts) >= 2:  # Ensure at least two columns of data
@@ -60,7 +60,7 @@ def parse_output_log(file_path):
                     except ValueError:
                         # Skip lines that can't be parsed
                         continue
-        
+
         return sizes, bandwidths
     except Exception as e:
         print(f"Error parsing file {file_path}: {e}")
@@ -100,61 +100,61 @@ def format_size_labels(sizes):
 
 def plot_bandwidth_subplots(eval_name, versions, process_nums, output_file=None, title=None, results_base_dir=None):
     """Plot bandwidth performance in horizontal subplots, one per version"""
-    
+
     # Create figure with subplots (one per version)
     fig, axes = plt.subplots(1, len(versions), figsize=(4.5*len(versions), 3.5))
-    
+
     # If only one version, convert axes to array for consistent indexing
     if len(versions) == 1:
         axes = np.array([axes])
-    
+
     # Colors and markers for different process counts
     colors = ['b', 'c', 'r', 'g', 'm', 'y', 'k', 'orange']
     markers = ['o', 's', '^', 'd', 'v', 'p', '*', 'x']
-    
+
     # Keep track of all sizes for consistent x-axis
     all_sizes = set()
-    
+
     # Create a mapping to store data for legend
     legend_handles = []
     legend_labels = []
-    
+
     # Process data for each version
     for i, ver in enumerate(versions):
         ax = axes[i]
         has_data = False
-        
+
         # Set title for the subplot
         ax.set_title(ver_title(ver), fontsize=14)
-        
+
         # Process each process count for this version
         for j, proc in enumerate(process_nums):
             # Construct file path with optional base directory
             file_path = os.path.join(results_base_dir, eval_name, ver, proc, "output.log")
-            
+
             if check_file_exists(file_path):
                 sizes, bandwidths = parse_output_log(file_path)
-                
+
                 if sizes and bandwidths:
                     has_data = True
                     # Update all sizes for consistent x-axis
                     all_sizes.update(sizes)
-                    
+
                     # Select color and marker based on process count
                     color_idx = j % len(colors)
                     marker_idx = j % len(markers)
-                    
+
                     # Plot this dataset
                     line, = ax.plot(
-                        sizes, 
-                        bandwidths, 
-                        marker=markers[marker_idx], 
+                        sizes,
+                        bandwidths,
+                        marker=markers[marker_idx],
                         color=colors[color_idx],
                         linestyle='-',
                         label=f"{proc} processes",
                         markersize=4
                     )
-                    
+
                     # Store handle and label for first version only (for legend)
                     if i == 0:
                         legend_handles.append(line)
@@ -174,32 +174,32 @@ def plot_bandwidth_subplots(eval_name, versions, process_nums, output_file=None,
 
         ax.set_xlabel('Message Size (Bytes)', fontsize=12)
         ax.grid(True, which="both", ls="--", alpha=0.7)
-        
+
         # Only add y-label to the first subplot
         if i == 0:
             ax.set_ylabel('Latency (us)', fontsize=12)
-        
+
         # if ver == "cxl_eth_2" or ver == "ib_2":
         #     ax.set_ylim(0, 11000)
         #     ax.set_yticks(np.arange(0, 10001, 2000))
-    
+
     # Set consistent x-ticks across all subplots
     unique_sizes = sorted(list(all_sizes))
     x_sizes = [1, 4, 16, 64, 256, 1024, 4096, 16384, 65536, 262144, 1048576, 4194304]
     formatted_labels = format_size_labels(x_sizes)
-    
+
     for ax in axes:
         ax.set_xticks(x_sizes)
         ax.set_xticklabels(formatted_labels, rotation=45)
-    
+
     # Create a single legend for all subplots
-    fig.legend(legend_handles, legend_labels, 
+    fig.legend(legend_handles, legend_labels,
                loc='upper center', bbox_to_anchor=(0.5, 1.02),
                ncol=len(process_nums), frameon=True)
-    
+
     # Adjust layout
     plt.tight_layout(rect=[0, 0.1, 1, 0.95])  # Make room for the legend and title
-    
+
     # Save or display chart
     if output_file:
         try:
@@ -212,7 +212,7 @@ def plot_bandwidth_subplots(eval_name, versions, process_nums, output_file=None,
             return False
     else:
         plt.show()
-    
+
     return True
 
 def main():
@@ -224,30 +224,30 @@ def main():
     parser.add_argument('--title', help='Chart title')
     parser.add_argument('--result_dir', help='Result Data Dir')
 
-    
+
     args = parser.parse_args()
-    
+
     # Split parameters into lists
     versions = args.versions.split(',')
     process_nums = args.processes.split(',')
-    
-    
+
+
     # Generate default output filename if not provided
     if not args.output:
         from datetime import datetime
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
         args.output = f'{args.eval}_comparison_{timestamp}'
-    
+
     # Plot chart
     success = plot_bandwidth_subplots(
-        args.eval, 
-        versions, 
-        process_nums, 
-        args.output, 
+        args.eval,
+        versions,
+        process_nums,
+        args.output,
         args.title,
         args.result_dir
     )
-    
+
     if not success:
         sys.exit(1)
 

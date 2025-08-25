@@ -200,20 +200,20 @@ bash test_seq_bw_devdax_read_nt.sh
 Main Memory
 
 ```
-# Latency  
+# Latency
 ./mlc --latency_matrix
 
-# Bandwidth  
+# Bandwidth
 ./mlc --bandwidth_matrix
 ```
 
 CXL Memory Sharing (with caching; no cache flushing)
 
 ```
-# Latency  
+# Latency
 ./mlc --latency_matrix
 
-# Bandwidth  
+# Bandwidth
 ./mlc --bandwidth_matrix
 
 ```
@@ -221,61 +221,61 @@ CXL Memory Sharing (with caching; no cache flushing)
 CXL Memory Sharing (with cache flushing)
 
 ```
-# Latency  
-cd ~/cxl_type3_tests/memo_ae/  
+# Latency
+cd ~/cxl_type3_tests/memo_ae/
 bash test_memset_lat_clflushopt.sh
 
 # Bandwidth
-cd ~/cxl_type3_tests/memo_ae/  
+cd ~/cxl_type3_tests/memo_ae/
 bash test_seq_bw_devdax_read_nt.sh
 ```
 
 TCP over Standard Ethernet NIC
 
 ```
-# Latency  
+# Latency
 ## on server
-iperf3 -s -p 45678  
-## on client  
+iperf3 -s -p 45678
+## on client
 iperf3 -p 45678 -c server_ip -t 30 -P 1 -u
 
-# Bandwidth  
-## on server  
-iperf3 -s -p 45678  
-## on client  
-iperf3 -p 45678 -c server_ip -t 30 -P 1  
+# Bandwidth
+## on server
+iperf3 -s -p 45678
+## on client
+iperf3 -p 45678 -c server_ip -t 30 -P 1
 
 ```
 
-TCP over Mellanox (CX-6 Dx)  
+TCP over Mellanox (CX-6 Dx)
 ```
-# Latency  
-## on server  
-iperf3 -s -p 45678  
-## on client  
-iperf3 -p 45678 -c server_ip -t 30 -P 1 -u  
+# Latency
+## on server
+iperf3 -s -p 45678
+## on client
+iperf3 -p 45678 -c server_ip -t 30 -P 1 -u
 
 
-# Bandwidth  
-## on server  
-iperf3 -s -p 45678  
-## on client  
-iperf3 -p 45678 -c server_ip -t 30 -P 8  
-
-```
-
-RoCEv2 over Mellanox (CX-6 Dx)  
+# Bandwidth
+## on server
+iperf3 -s -p 45678
+## on client
+iperf3 -p 45678 -c server_ip -t 30 -P 8
 
 ```
-# Latency  
-## on server   
-ib_write_lat --ib-dev=mlx5_1 -s 8 -n 10000  
-ib_write_lat --ib-dev=mlx5_1 -s 8 -n 10000  server_ip  
 
-# Bandwidth  
-## on server  
-ib_write_bw --ib-dev=mlx5_1 -s 65536 -n 10000  
-## on client  
-ib_write_bw --ib-dev=mlx5_1 -s 65536 -n 1000 server_ip  
+RoCEv2 over Mellanox (CX-6 Dx)
+
+```
+# Latency
+## on server
+ib_write_lat --ib-dev=mlx5_1 -s 8 -n 10000
+ib_write_lat --ib-dev=mlx5_1 -s 8 -n 10000  server_ip
+
+# Bandwidth
+## on server
+ib_write_bw --ib-dev=mlx5_1 -s 65536 -n 10000
+## on client
+ib_write_bw --ib-dev=mlx5_1 -s 65536 -n 1000 server_ip
 
 ```
