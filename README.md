@@ -35,7 +35,7 @@ conda create -n mpich_cxl
 
 conda activate mpich_cxl
 
-conda install -c conda-forge compilers
+conda install -c conda-forge gcc=12 gxx=12 gfortran=12
 ```
 
 
