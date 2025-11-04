@@ -138,6 +138,11 @@ make -j32 && make install
 
 ## Generate scripts for OMB evaluation
 
+```
+cd $HOME/cMPI/mpi_run_bench
+```
+
+
 Generate scripts for OMB one-sided latency test
 ```
 bash gen_one_sided_lat.sh
