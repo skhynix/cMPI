@@ -67,6 +67,9 @@ conda activate mpich_cxl
 
 cd $HOME
 
+wget https://mvapich.cse.ohio-state.edu/download/mvapich/osu-micro-benchmarks-7.4.tar.gz
+
+
 tar -xzvf osu-micro-benchmarks-7.4.tar.gz -C osu-micro-benchmarks-7.4-mpich_cxl
 
 cd $HOME/osu-micro-benchmarks-7.4-mpich_cxl
