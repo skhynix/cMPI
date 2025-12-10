@@ -47,8 +47,12 @@ cd $HOME
 git clone --recursive https://github.com/skhynix/cMPI.git
 ```
 
+  
+Change CXL_SHM_DAX_PATH to your CXL DAX device in $HOME/cMPI/mpich/src/mpl/src/shm/cxl_shm.c  
+<img width="353" height="166" alt="image" src="https://github.com/user-attachments/assets/a357c005-224a-45d4-988c-1fd188abc1a3" />
 
-Build MPICH
+
+Build MPICH  
 
 ```
 cd $HOME/cMPI/mpich
