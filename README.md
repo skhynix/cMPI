@@ -142,19 +142,18 @@ make -j32 && make install
 
 ## Generate scripts for OMB evaluation
 
-Change FI_TCP_IFACE in configuration files under $HOME/cMPI/mpi_run_bench/config_settings.
+
+```
+cd $HOME/cMPI/mpi_run_bench
+```
+
+Change FI_TCP_IFACE in configuration files under $HOME/cMPI/mpi_run_bench/config_settings.  
 <img width="304" height="89" alt="image" src="https://github.com/user-attachments/assets/e6fa9210-ad55-4d6a-a80d-43d0c7b3a31c" />
 
 Create hostfile and specify the hostnames.  
 
 ```  
 touch ${HOME}/mpi_sf/mpich_hostfile
-```
-
-
-
-```
-cd $HOME/cMPI/mpi_run_bench
 ```
 
 
