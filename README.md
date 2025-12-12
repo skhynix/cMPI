@@ -71,10 +71,7 @@ conda activate mpich_cxl
 
 cd $HOME
 
-wget https://mvapich.cse.ohio-state.edu/download/mvapich/osu-micro-benchmarks-7.4.tar.gz
-
-
-tar -xzvf osu-micro-benchmarks-7.4.tar.gz -C osu-micro-benchmarks-7.4-mpich_cxl
+git clone https://github.com/PASAUCMerced/osu-micro-benchmarks-7.4-ext.git osu-micro-benchmarks-7.4-mpich_cxl
 
 cd $HOME/osu-micro-benchmarks-7.4-mpich_cxl
 
@@ -125,13 +122,11 @@ Build OMB benchmarks
 
 cd $HOME
 
-wget https://mvapich.cse.ohio-state.edu/download/mvapich/osu-micro-benchmarks-7.4.tar.gz
+git clone https://github.com/PASAUCMerced/osu-micro-benchmarks-7.4-ext.git osu-micro-benchmarks-7.4-mpich  
 
-conda activate mpich
+cd $HOME/osu-micro-benchmarks-7.4-mpich  
 
-tar -xzvf osu-micro-benchmarks-7.4.tar.gz -C osu-micro-benchmarks-7.4-mpich
-
-cd $HOME/osu-micro-benchmarks-7.4-mpich
+conda activate mpich  
 
 ./configure  --prefix=$CONDA_PREFIX/osu-micro-benchmarks CC=$CONDA_PREFIX/bin/mpicc CXX=$CONDA_PREFIX/bin/mpicxx
 
